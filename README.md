@@ -33,6 +33,7 @@ from directory with Dockerfile
 ```alias k=kubectl```
 
 **pod**: A group of related containers that will always run concurrently on the same worker node and in the same namespace. Each pod has its own IP, hostname, processes.
+
 **scheduling**: distributing pods between worker nodes.
 **replicationcontroller**: makes sure there is always one instance of your pod running. Used to replicate pods and keep them running. can define how many replicas is required. If a pod was to break or be removed, the controller will make a new one to replace it.
 
