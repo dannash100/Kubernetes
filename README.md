@@ -53,10 +53,9 @@ each pod has its own IP address but it is internal to the cluster and not access
 
 service object solves problem of ever-changing IPs of pods as they are created and disappear. It also exposes multiple pods at a single consistent IP and port pair
 
-
 ### commands
 
--```get nodes```: list nodes
--```get pods [-o wide]```: list pods, ?display IP and pods node
--```describe [node | pod] [name]```: detailed information about single or all nodes. CPU and memory data, system information, containers running on the node and more.
+- ```get nodes```: list nodes.
+- ```get pods [-o wide]```: list pods, ?display IP and pods node
+- ```describe [node | pod] [name]```: detailed information about single or all nodes. CPU and memory data, system information, containers running on the node and more.
 
