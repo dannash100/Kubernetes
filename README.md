@@ -1,4 +1,4 @@
-# kubernetes
+# kubernetes-docker
 kubernetes and docker
 
 define aliases to make life eaiser in ```~/.bash_profile``` by adding ```alias alias_name=full_command```
