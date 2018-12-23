@@ -27,8 +27,7 @@ from directory with Dockerfile
 ## creating simple kubernetes cluster with minikube
 
 ```minikube start```: sets up a single-node cluster for use in testing kubernetes and developing apps locally
-```kubectl cluster-info```: display cluster and urls of kubernetes components
-```kubectl ssh```: log into Minikube VM to explore processes running on the node
+```minikube dashboard```: open GUI
 
 ## kubectl
 ```alias k=kubectl```
@@ -44,6 +43,8 @@ each pod has its own IP address but it is internal to the cluster and not access
 - ```expose rc image_name --type=LoadBalencer --name image_name-http```: rc = replicationcontroller. creates service object
 - ```get services```: list service objects
 - ```get rc```: list replicationcontrollers
+- ```cluster-info```: display cluster and urls of kubernetes components
+- ```ssh```: log into Minikube VM to explore processes running on the node
 
 **horizontal scaling**: ```scale rc image_name --replicas=3``` define desired pod instances
 
@@ -53,6 +54,6 @@ service object solves problem of ever-changing IPs of pods as they are created a
 ### commands
 
 -```get nodes```: list nodes
--```get pods```: list pods
+-```get pods [-o wide]```: list pods, ?display IP and pods node
 -```describe [node | pod] [name]```: detailed information about single or all nodes. CPU and memory data, system information, containers running on the node and more.
 
