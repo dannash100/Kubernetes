@@ -21,4 +21,7 @@ from directory with Dockerfile
 
 
 ## creating simple kubernetes cluster
-```minikube start```
+
+
+```minikube start```: sets up a single-node cluster for use in testing kubernetes and developing apps locally
+```kubectl cluster-info```: display cluster and urls of kubernetes components
