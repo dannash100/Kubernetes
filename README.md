@@ -27,6 +27,11 @@ from directory with Dockerfile
 ## kubernetes
 ```alias k=kubectl```
 
+### YAML descriptors
+define kubernetes objects from YAML files.
+```kubectl get pod pod_name -o yaml```
+
+
 ### creating simple kubernetes cluster with minikube
 
 ```minikube start```: sets up a single-node cluster for use in testing kubernetes and developing apps locally
@@ -40,7 +45,7 @@ from directory with Dockerfile
 - containers within pods can communicate through localhost
 - communicate between separate pods and worker nodes with NAT-less network using the pods routable IP address
 - pods are lightweight so dispersing apps into multiple pods is preferable, each one should contain only tightly related processes.
-- for example "the main container in a pod could be a web server that serves files from a certain file directory, while an additional container (a sidecar container) periodically downloads content from an external source and stores it in the web server’s directory."
+- example structure of a pod with a main container and supporting containers "the main container in a pod could be a web server that serves files from a certain file directory, while an additional container (a sidecar container) periodically downloads content from an external source and stores it in the web server’s directory."
 
 ### scheduling
 
