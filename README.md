@@ -1,7 +1,7 @@
 # kubernetes-docker
-kubernetes and docker
+kubernetes and docker notes and exercises following *Kubernetes in Action* Marko Luksa (Manning) 2017
 
-define aliases to make life eaiser in ```~/.bash_profile``` by adding ```alias alias_name=full_command```
+define aliases to make life easier in ```~/.bash_profile``` by adding ```alias alias_name=full_command```
 
 ## docker
 
@@ -36,11 +36,15 @@ from directory with Dockerfile
 
 - A group of related containers that will always run concurrently on the same worker node and in the same namespace. Each pod has its own IP, hostname, processes.
 - pods allow for containers inside each group to share certain resources but not all, to achieve this Docker is configured to have all containers of a pod share the same set of Linux namespaces (shared hostname, network interfaces and IPC).
+- containers in pods must make sure to not have port conflicts as they share a common port space.
+- containers within pods can communicate through localhost
+- communicate between separate pods and worker nodes with NAT-less network using the pods routable IP address
+- pods are lightweight so dispersing apps into multiple pods is preferable, each one should contain only tightly related processes.
+- for example "the main container in a pod could be a web server that serves files from a certain file directory, while an additional container (a sidecar container) periodically downloads content from an external source and stores it in the web server’s directory."
 
 ### scheduling
 
 - distributing pods between worker nodes.
-
 
 ### service object & replication controller
 
