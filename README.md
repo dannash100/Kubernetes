@@ -26,6 +26,11 @@ from directory with Dockerfile
 ## kubernetes
 ```alias k=kubectl```
 
+### creating simple kubernetes cluster with minikube
+
+```minikube start```: sets up a single-node cluster for use in testing kubernetes and developing apps locally
+```minikube dashboard```: open GUI
+
 ### YAML descriptors
 define kubernetes objects from YAML files.
 ```kubectl get pod pod_name -o yaml``` to view YAML of a deployed pod
@@ -49,11 +54,6 @@ spec:
 ```
 
 port definition can be omitted as is purely informational.
-
-### creating simple kubernetes cluster with minikube
-
-```minikube start```: sets up a single-node cluster for use in testing kubernetes and developing apps locally
-```minikube dashboard```: open GUI
 
 ### pods
 
@@ -83,6 +83,8 @@ port definition can be omitted as is purely informational.
 - ```get rc```: list replicationcontrollers
 - ```cluster-info```: display cluster and urls of kubernetes components
 - ```ssh```: log into Minikube VM to explore processes running on the node
+- ```logs pod_name [-c container_name]```: retreive logs *note: logs are rotated daily, every time the file reaches 10MB in size*
+- ```port-forward pod_name 8888:8080``` & then ```curl localhost:8888```: connect to pod with port forwarding for debug
 
 **horizontal scaling**: ```scale rc image_name --replicas=3``` define desired pod instances
 
