@@ -23,14 +23,32 @@ from directory with Dockerfile
 - ```docker tag image_name user/image_name```
 - ```docker push user/image_name```
 
-
 ## kubernetes
 ```alias k=kubectl```
 
 ### YAML descriptors
 define kubernetes objects from YAML files.
-```kubectl get pod pod_name -o yaml```
+```kubectl get pod pod_name -o yaml``` to view YAML of a deployed pod
 
+- view guide template for creating manifests from scratch use explain: ```kubectl explain pods[.spec]```
+- create from YAML or JSON: ```kubectl create -f pod_name.yaml```
+
+**example of a basic pod manifest** ```pod_name.yaml```
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kubia-manual
+spec:
+  containers:
+  - image: luksa/kubia
+    name: kubia
+    ports:
+    - containerPort: 8080
+      protocol: TCP
+```
+
+port definition can be omitted as is purely informational.
 
 ### creating simple kubernetes cluster with minikube
 
