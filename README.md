@@ -65,6 +65,16 @@ port definition can be omitted as is purely informational.
 - pods are lightweight so dispersing apps into multiple pods is preferable, each one should contain only tightly related processes.
 - example structure of a pod with a main container and supporting containers "the main container in a pod could be a web server that serves files from a certain file directory, while an additional container (a sidecar container) periodically downloads content from an external source and stores it in the web server’s directory."
 
+### labels
+
+- key-value pair you attach to a resource and then used when selecting resources using *label selectors*
+example:
+  - app: ui, which specifies which app, component, or microservice the pod belongs to.
+  - rel: stable, which shows whether the application running in the pod is a stable, beta,
+  or a canary release.
+- defined in metadata portion of manifest
+- can use multiple label selectors such as ```!label_name, label_name=val,```
+
 ### scheduling
 
 - distributing pods between worker nodes.
