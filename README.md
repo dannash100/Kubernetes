@@ -88,12 +88,15 @@ example:
 
 ### service object & replication controller
 
+- rarely will you actually create pods directly, instead you create other resources such as RC's or deployments which create and manage the actual pods.
 - service object solves problem of ever-changing IPs of pods as they are created and disappear. It also exposes multiple pods at a single consistent IP and port pair
 - each pod has its own IP address but it is internal to the cluster and not accessible, it can be exposed through the service object.
 
 **LoadBalancer-type service**: an external load balancer that you can use to connect to a pod through its public IP.
 
 **replicationcontroller**: makes sure there is always one instance of your pod running. Used to replicate pods and keep them running. can define how many replicas is required. If a pod was to break or be removed, the controller will make a new one to replace it.
+
+### commands
 
 - ```expose rc image_name --type=LoadBalencer --name image_name-http```: rc = replicationcontroller. creates service object
 - ```get services```: list service objects
@@ -105,10 +108,17 @@ example:
 
 **horizontal scaling**: ```scale rc image_name --replicas=3``` define desired pod instances
 
-### commands
-
 - ```get nodes```: list nodes
 - ```get pods [-o wide]```: list pods, ?display IP and pods node
 - ```describe [node | pod] [name]```: detailed information about single or all nodes. CPU and memory data, system information, containers running on the node and more.
 - ```delete po [pod_name | -l label=val]``` delete pod by name or by label
 
+## maintenance and VM health
+
+### liveness probes
+
+- check to see if containers are alive
+- assigned to container and then Kubernetes will periodically execute the probe and restart the container if it needs to.
+- **HTTP GET probe** performs GET request on containers IP, port, path.
+- **TCP Socket probe** tries to open a TCP connection on the port of a container
+- **Exec probe** executes a command inside container and checks the commands exit status code.
