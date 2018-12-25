@@ -78,7 +78,7 @@ example:
 
 ### namespace
 
--```get ns``` view ns in cluster
+- ```get ns``` view ns in cluster
 - see ```examples/custom-namespace.yaml``` then ```create -f``` it
 - ```kubectl create -f pod_name.yaml -n custom-namespace``` to create into custom ns
 
