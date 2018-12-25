@@ -74,6 +74,13 @@ example:
   or a canary release.
 - defined in metadata portion of manifest
 - can use multiple label selectors such as ```!label_name, label_name=val,```
+- can use to categorize worker nodes using ```nodeSelector: condition: "true"``` part of the *spec* section deploy this pod only to nodes containing condition label.
+
+### namespace
+
+-```get ns``` view ns in cluster
+- see ```examples/custom-namespace.yaml``` then ```create -f``` it
+- ```kubectl create -f pod_name.yaml -n custom-namespace``` to create into custom ns
 
 ### scheduling
 
@@ -93,7 +100,7 @@ example:
 - ```get rc```: list replicationcontrollers
 - ```cluster-info```: display cluster and urls of kubernetes components
 - ```ssh```: log into Minikube VM to explore processes running on the node
-- ```logs pod_name [-c container_name]```: retreive logs *note: logs are rotated daily, every time the file reaches 10MB in size*
+- ```logs pod_name [-c container_name]```: retrieve logs *note: logs are rotated daily, every time the file reaches 10MB in size*
 - ```port-forward pod_name 8888:8080``` & then ```curl localhost:8888```: connect to pod with port forwarding for debug
 
 **horizontal scaling**: ```scale rc image_name --replicas=3``` define desired pod instances
@@ -103,4 +110,5 @@ example:
 - ```get nodes```: list nodes
 - ```get pods [-o wide]```: list pods, ?display IP and pods node
 - ```describe [node | pod] [name]```: detailed information about single or all nodes. CPU and memory data, system information, containers running on the node and more.
+- ```delete po [pod_name | -l label=val]``` delete pod by name or by label
 
