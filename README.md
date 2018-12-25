@@ -86,15 +86,13 @@ example:
 
 - distributing pods between worker nodes.
 
-### service object & replication controller
+### service object
 
 - rarely will you actually create pods directly, instead you create other resources such as RC's or deployments which create and manage the actual pods.
 - service object solves problem of ever-changing IPs of pods as they are created and disappear. It also exposes multiple pods at a single consistent IP and port pair
 - each pod has its own IP address but it is internal to the cluster and not accessible, it can be exposed through the service object.
 
 **LoadBalancer-type service**: an external load balancer that you can use to connect to a pod through its public IP.
-
-**replicationcontroller**: makes sure there is always one instance of your pod running. Used to replicate pods and keep them running. can define how many replicas is required. If a pod was to break or be removed, the controller will make a new one to replace it.
 
 ### commands
 
@@ -105,9 +103,6 @@ example:
 - ```ssh```: log into Minikube VM to explore processes running on the node
 - ```logs pod_name [-c container_name]```: retrieve logs *note: logs are rotated daily, every time the file reaches 10MB in size*
 - ```port-forward pod_name 8888:8080``` & then ```curl localhost:8888```: connect to pod with port forwarding for debug
-
-**horizontal scaling**: ```scale rc image_name --replicas=3``` define desired pod instances
-
 - ```get nodes```: list nodes
 - ```get pods [-o wide]```: list pods, ?display IP and pods node
 - ```describe [node | pod] [name]```: detailed information about single or all nodes. CPU and memory data, system information, containers running on the node and more.
@@ -115,10 +110,27 @@ example:
 
 ## maintenance and VM health
 
+- to inspect a crashed pods log use ```logs mypod --previous``` & last state section in ```describe pod pod_name```
+**exit codes 137 and 143** process killed/terminated by an external signal
+
 ### liveness probes
+*find examples/liveness/kubia-liveness-probe.yaml*
 
 - check to see if containers are alive
 - assigned to container and then Kubernetes will periodically execute the probe and restart the container if it needs to.
 - **HTTP GET probe** performs GET request on containers IP, port, path.
 - **TCP Socket probe** tries to open a TCP connection on the port of a container
 - **Exec probe** executes a command inside container and checks the commands exit status code.
+
+### replication controllers
+
+- makes sure there is always one instance of your pod running by replicating them
+- if a pod was to break or be removed, the controller will make a new one to replace it.
+- enables easy horizontal scaling
+
+**horizontal scaling example**: ```scale rc image_name --replicas=3``` define desired pod instances
+
+made up of 3 parts
+1. a *label selector* determines what pods are in the RC's scope
+2. a *replica count* specifies the desired number of pods to run
+3. a *pod template* creates new replicas
