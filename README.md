@@ -158,3 +158,9 @@ made up of 3 parts
 1. a *label selector* determines what pods are in the RC's scope
 2. a *replica count* specifies the desired number of pods to run
 3. a *pod template* creates new replicas
+
+### job resource
+*see batch-job/exporter.yaml*
+
+- run a pod whose container isn't restarted when the process running inside finished successfully.
+- usage includes exporting large quantities of data and exporting it

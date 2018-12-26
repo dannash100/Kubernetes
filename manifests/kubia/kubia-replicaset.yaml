@@ -14,4 +14,4 @@ spec:
     spec:
       containers:
       - name: kubia
-        image: kubia
+        image: luksa/kubia
