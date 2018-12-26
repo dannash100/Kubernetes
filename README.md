@@ -9,6 +9,7 @@ define aliases to make life easier in ```~/.bash_profile``` by adding ```alias a
 
 from directory with Dockerfile
 ```docker build -t container_name```
+```docker run --name container_name -p 8080:8080 -d kubia```
 
 ### commands
 
@@ -107,6 +108,7 @@ example:
 - ```get pods [-o wide]```: list pods, ?display IP and pods node
 - ```describe [node | pod] [name]```: detailed information about single or all nodes. CPU and memory data, system information, containers running on the node and more.
 - ```delete po [pod_name | -l label=val]``` delete pod by name or by label
+- ```edit``` edit yaml definition in text-editor
 
 ## maintenance and VM health
 
@@ -127,6 +129,28 @@ example:
 - makes sure there is always one instance of your pod running by replicating them
 - if a pod was to break or be removed, the controller will make a new one to replace it.
 - enables easy horizontal scaling
+- RC's manage pods that match its label selector *see kubia-rc.yaml example*
+- changing pod template will have no effect on the pods already defined, to modify them to need to delete them and let the rc replace them with new ones based on the new template.
+
+### replica sets
+*replace use of replication controllers and behave almost identically*
+
+- usually not created directly, created automatically when creating higher-level deployment resource.
+- more options with label selection - include a key regardless of value, or lack a label.
+- following example requires the pod to contain a label with 'app' key and 'kubia' value
+```yaml
+selector:
+  matchExpressions:
+    - key: app
+      operator: In
+      values:
+- kubia
+```
+- **operator** options = ```In, NotIn, Exists, DoesNotExist```
+
+### deamon sets
+
+- ensures a pod will run on each and every node. uses include log collecting and resource monitoring.
 
 **horizontal scaling example**: ```scale rc image_name --replicas=3``` define desired pod instances
 
