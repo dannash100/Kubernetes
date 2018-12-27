@@ -34,6 +34,7 @@ from directory with Dockerfile
 ```minikube start```: sets up a single-node cluster for use in testing kubernetes and developing apps locally
 ```minikube dashboard```: open GUI
 ```minikube service service_name```: access services through browser on minikube
+```minikube addons list```, ```minikube enable addon_name```: view and enable addons
 ```minikube [stop | delete]```: stop or delete VM to cleanup
 
 ### YAML descriptors
@@ -171,7 +172,7 @@ made up of 3 parts
 - cron schedule format ```"0,5,15,30,45 * * * *"``` from left to right: ```min, hr, day of month, month, day of week``` in this case the job will run at 0, 15, 30 and 45 mins every hour of every day of every month on every day of the week.
 - ```"0,30 * 1 * *"```: every 30 mins but only on first day of month, ```"0 3 * * 0"```: 3AM every Sunday
 
-## exposing services internally and externally
+## exposing services internally
 
 ### services
 
@@ -183,23 +184,35 @@ made up of 3 parts
 - each pod has its own IP address but it is internal to the cluster and not accessible, it can be exposed through the service object.
 - services can be set to hit multiple ports
 
-**LoadBalancer-type service**: an external load balancer that you can use to connect to a pod through its public IP.
-
 #### endpoints
 
-- endpoints sit between services and pods, a list of IP adresses and ports exposing a service.
+- endpoints sit between services and pods, a list of IP addresses and ports exposing a service.
 - can be manually configured and updated manually. *see tools/external-service note: name of endpoint object must match service*
 - contains a list of IPs that the service will forward connections to and a target port.
 - can communicate with external resources in this way, outside of Kubernetes. *see tools/external-service-externalname* for externalName method
 
-
 ### DNS
 
-- pods run a DNS server that all other pods in the cluster can access through its (FQDN), automaticly configured in ```/etc/resolv/conf```
+- pods run a DNS server that all other pods in the cluster can access through its (FQDN), automatically configured in ```/etc/resolv/conf```
 - If running in a single namespace only ```http://service_name``` is required.
+
+## exposing services externally
 
 ### nodeports
 
 - set type in Services spec to NodePort to forward incoming connections to the pods that are part of the service.
 - you will need to adjust the cloud platforms firewall to allow external connections on the node port
-- then it will be accesible on ```<node IP>:<node port>```
+- then it will be accessible to the whole internet on ```<node IP>:<node port>```
+
+### loadbalancers
+*see kubia-svc-loadbalancer.yaml*
+
+- load balancers have their own publicly accessible IP and will redirect all connections to your own service.
+
+### ingress resource
+*see kubia-ingress.yaml*
+
+- each LoadBalancer service requires its own load balancer with its own public IP address whereas an Ingress only requires one.
+- when hit with an HTTP request the host and path in the request determine which service the request is forward to
+- ingresses can provide features such as cookie-based session affinity which services can't
+- when the specified host url is requested it will send request to the specified service and port
