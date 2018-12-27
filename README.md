@@ -34,6 +34,7 @@ from directory with Dockerfile
 ```minikube start```: sets up a single-node cluster for use in testing kubernetes and developing apps locally
 ```minikube dashboard```: open GUI
 ```minikube service service_name```: access services through browser on minikube
+```minikube [stop | delete]```: stop or delete VM to cleanup
 
 ### YAML descriptors
 define kubernetes objects from YAML files.
