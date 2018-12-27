@@ -87,14 +87,6 @@ example:
 
 - distributing pods between worker nodes.
 
-### service object
-
-- rarely will you actually create pods directly, instead you create other resources such as RC's or deployments which create and manage the actual pods.
-- service object solves problem of ever-changing IPs of pods as they are created and disappear. It also exposes multiple pods at a single consistent IP and port pair
-- each pod has its own IP address but it is internal to the cluster and not accessible, it can be exposed through the service object.
-
-**LoadBalancer-type service**: an external load balancer that you can use to connect to a pod through its public IP.
-
 ### commands
 
 - ```expose rc image_name --type=LoadBalencer --name image_name-http```: rc = replicationcontroller. creates service object
@@ -102,6 +94,7 @@ example:
 - ```get rc```: list replicationcontrollers
 - ```cluster-info```: display cluster and urls of kubernetes components
 - ```ssh```: log into Minikube VM to explore processes running on the node
+- ```exec pod_name -- curl -s http://10.111.249.153```, ```exec pod_name env```: remotely run commands inside an existing container of a pod. examine contents, state and enviroment of a container. need to obtain the cluster IP of your service. Everything that follows the double dash will be executed inside the pod.
 - ```logs pod_name [-c container_name]```: retrieve logs *note: logs are rotated daily, every time the file reaches 10MB in size*
 - ```port-forward pod_name 8888:8080``` & then ```curl localhost:8888```: connect to pod with port forwarding for debug
 - ```get nodes```: list nodes
@@ -160,7 +153,28 @@ made up of 3 parts
 3. a *pod template* creates new replicas
 
 ### job resource
-*see batch-job/exporter.yaml*
+*see batch-job*
 
 - run a pod whose container isn't restarted when the process running inside finished successfully.
 - usage includes exporting large quantities of data and exporting it
+- can set to run multiple completions and parallel operations. can be scaled in real-time with ```scale job job_name --replicas 3```
+- limit job time with ```activeDeadlineSeconds``` in spec
+
+### cron jobs
+
+- batch jobs that run at a specific time in the future or repeatedly in specified intervals
+- cron schedule format ```"0,5,15,30,45 * * * *"``` from left to right: ```min, hr, day of month, month, day of week``` in this case the job will run at 0, 15, 30 and 45 mins every hour of every day of every month on every day of the week.
+- ```"0,30 * 1 * *"```: every 30 mins but only on first day of month, ```"0 3 * * 0"```: 3AM every Sunday
+
+### services
+
+- there may be multiple pods that act as the frontend and a single backend database pod, this presents two problems
+  1. external clients need to connect to frontend without needing to know the state or structure of the backend.
+  2. front end pods need to connect to back end database which may move around a cluster over time and change IP.
+- service object solves problem of ever-changing IPs of pods as they are created and disappear. It also exposes multiple pods at a single consistent IP and port pair
+- Additionaly you can enable frontend pods to easily access backend service by name through environmental variables or DNS.
+- each pod has its own IP address but it is internal to the cluster and not accessible, it can be exposed through the service object.
+- services can be set to hit multiple ports
+
+
+**LoadBalancer-type service**: an external load balancer that you can use to connect to a pod through its public IP.
