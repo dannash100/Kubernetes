@@ -194,3 +194,6 @@ made up of 3 parts
 - pods run a DNS server that all other pods in the cluster can access through its (FQDN), automaticly configured in ```/etc/resolv/conf```
 - If running in a single namespace only ```http://service_name``` is required.
 
+### nodeports
+
+- a type of service
