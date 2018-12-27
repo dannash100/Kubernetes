@@ -95,6 +95,7 @@ example:
 - ```cluster-info```: display cluster and urls of kubernetes components
 - ```ssh```: log into Minikube VM to explore processes running on the node
 - ```exec pod_name -- curl -s http://10.111.249.153```, ```exec pod_name env```: remotely run commands inside an existing container of a pod. examine contents, state and enviroment of a container. need to obtain the cluster IP of your service. Everything that follows the double dash will be executed inside the pod.
+- ```exec -it pod_name bash```: run bash inside a pods container
 - ```logs pod_name [-c container_name]```: retrieve logs *note: logs are rotated daily, every time the file reaches 10MB in size*
 - ```port-forward pod_name 8888:8080``` & then ```curl localhost:8888```: connect to pod with port forwarding for debug
 - ```get nodes```: list nodes
@@ -103,7 +104,7 @@ example:
 - ```delete po [pod_name | -l label=val]``` delete pod by name or by label
 - ```edit``` edit yaml definition in text-editor
 
-## maintenance and VM health
+## deploying managed pods
 
 - to inspect a crashed pods log use ```logs mypod --previous``` & last state section in ```describe pod pod_name```
 **exit codes 137 and 143** process killed/terminated by an external signal
@@ -166,6 +167,8 @@ made up of 3 parts
 - cron schedule format ```"0,5,15,30,45 * * * *"``` from left to right: ```min, hr, day of month, month, day of week``` in this case the job will run at 0, 15, 30 and 45 mins every hour of every day of every month on every day of the week.
 - ```"0,30 * 1 * *"```: every 30 mins but only on first day of month, ```"0 3 * * 0"```: 3AM every Sunday
 
+## exposing services internally and externally
+
 ### services
 
 - there may be multiple pods that act as the frontend and a single backend database pod, this presents two problems
@@ -176,5 +179,18 @@ made up of 3 parts
 - each pod has its own IP address but it is internal to the cluster and not accessible, it can be exposed through the service object.
 - services can be set to hit multiple ports
 
-
 **LoadBalancer-type service**: an external load balancer that you can use to connect to a pod through its public IP.
+
+#### endpoints
+
+- endpoints sit between services and pods, a list of IP adresses and ports exposing a service.
+- can be manually configured and updated manually. *see tools/external-service note: name of endpoint object must match service*
+- contains a list of IPs that the service will forward connections to and a target port.
+- can communicate with external resources in this way, outside of Kubernetes. *see tools/external-service-externalname* for externalName method
+
+
+### DNS
+
+- pods run a DNS server that all other pods in the cluster can access through its (FQDN), automaticly configured in ```/etc/resolv/conf```
+- If running in a single namespace only ```http://service_name``` is required.
+
