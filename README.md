@@ -29,8 +29,11 @@ from directory with Dockerfile
 
 ### creating simple kubernetes cluster with minikube
 
+[minikube basics and commands](https://kubernetes.io/docs/tutorials/hello-minikube/)
+
 ```minikube start```: sets up a single-node cluster for use in testing kubernetes and developing apps locally
 ```minikube dashboard```: open GUI
+```minikube service service_name```: access services through browser on minikube
 
 ### YAML descriptors
 define kubernetes objects from YAML files.
@@ -196,4 +199,6 @@ made up of 3 parts
 
 ### nodeports
 
-- a type of service
+- set type in Services spec to NodePort to forward incoming connections to the pods that are part of the service.
+- you will need to adjust the cloud platforms firewall to allow external connections on the node port
+- then it will be accesible on ```<node IP>:<node port>```
