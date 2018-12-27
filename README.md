@@ -184,7 +184,7 @@ made up of 3 parts
 - each pod has its own IP address but it is internal to the cluster and not accessible, it can be exposed through the service object.
 - services can be set to hit multiple ports
 
-#### endpoints
+### endpoints
 
 - endpoints sit between services and pods, a list of IP addresses and ports exposing a service.
 - can be manually configured and updated manually. *see tools/external-service note: name of endpoint object must match service*
